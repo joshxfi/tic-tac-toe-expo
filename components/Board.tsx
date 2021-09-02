@@ -45,7 +45,7 @@ export const Board = () => {
   };
 
   return (
-    <View style={tailwind('')}>
+    <View>
       <View style={tailwind('flex-row')}>
         {square(0)}
         {square(1)}
@@ -58,17 +58,28 @@ export const Board = () => {
         {square(5)}
       </View>
 
-      <View style={tailwind('flex-row')}>
+      <View style={tailwind('flex-row mb-4')}>
         {square(6)}
         {square(7)}
         {square(8)}
       </View>
 
-      {winner ? (
-        <Text>Winner: {winner}</Text>
-      ) : (
-        <Text>Turn: {turn ? 'X' : 'O'}</Text>
-      )}
+      <View style={tailwind('ml-2')}>
+        {winner ? (
+          <Text style={tailwind('text-xl font-bold')}>Winner: {winner}</Text>
+        ) : (
+          <Text style={tailwind('text-xl font-bold')}>
+            Turn: {turn ? 'X' : 'O'}
+          </Text>
+        )}
+
+        <Text
+          style={tailwind('text-xl font-bold')}
+          onPress={() => setHistory(Array(9).fill(null))}
+        >
+          Restart
+        </Text>
+      </View>
     </View>
   );
 };
