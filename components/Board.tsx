@@ -31,10 +31,13 @@ export const Board = () => {
   const winner = calculateGame(history);
 
   const onPress = (id: number) => {
-    const copyHistory = { ...history };
-    copyHistory[id] = turn ? 'X' : 'O';
-    setHistory(copyHistory);
-    setTurn(!turn);
+    if (!winner) {
+      const copyHistory = { ...history };
+      copyHistory[id] = turn ? 'X' : 'O';
+      setHistory(copyHistory);
+      setTurn(!turn);
+    }
+    return;
   };
 
   const square = (id: number) => {
@@ -61,7 +64,11 @@ export const Board = () => {
         {square(8)}
       </View>
 
-      <Text>{winner}</Text>
+      {winner ? (
+        <Text>Winner: {winner}</Text>
+      ) : (
+        <Text>Turn: {turn ? 'X' : 'O'}</Text>
+      )}
     </View>
   );
 };
