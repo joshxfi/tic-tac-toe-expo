@@ -6,6 +6,30 @@ export const Board = () => {
   const [history, setHistory] = useState<string[]>(Array(9).fill(null));
   const [turn, setTurn] = useState<boolean>(true);
 
+  const possibleWins = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+
+  const calculateGame = (h: string[]) => {
+    for (let i = 0; i < possibleWins.length; i++) {
+      const [a, b, c] = possibleWins[i];
+
+      if (h[a] && h[a] === h[b] && h[a] === h[c]) {
+        return h[a];
+      }
+    }
+    return '';
+  };
+
+  const winner = calculateGame(history);
+
   const onPress = (id: number) => {
     const copyHistory = { ...history };
     copyHistory[id] = turn ? 'X' : 'O';
@@ -36,6 +60,8 @@ export const Board = () => {
         {square(7)}
         {square(8)}
       </View>
+
+      <Text>{winner}</Text>
     </View>
   );
 };
