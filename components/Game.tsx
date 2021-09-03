@@ -26,17 +26,23 @@ const calculateGame = (h: string[]) => {
   return '';
 };
 
-export const Board = () => {
+export const Game = () => {
   const [gameStatus, setGameStatus] = useState<string[]>(playground);
   const [turn, setTurn] = useState<boolean>(true);
 
-  const winner = calculateGame(gameStatus);
+  const isFull = () => {
+    for (let i = 0; i < gameStatus.length; i++) {
+      if (gameStatus[i] !== null) return false;
+    }
+  };
+
+  const winner = isFull() ? 'draw' : calculateGame(gameStatus);
 
   const onPress = (id: number) => {
-    if (!winner) {
-      const copyHistory = { ...gameStatus };
-      copyHistory[id] = turn ? 'X' : 'O';
-      setGameStatus(copyHistory);
+    if (!winner && !gameStatus[id]) {
+      const copyGameStatus = { ...gameStatus };
+      copyGameStatus[id] = turn ? 'X' : 'O';
+      setGameStatus(copyGameStatus);
       setTurn(!turn);
     }
   };
