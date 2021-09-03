@@ -2,46 +2,47 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import tailwind from 'tailwind-rn';
 
+const playground = () => Array(9).fill('');
+
+const possibleWins = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6],
+];
+
+const calculateGame = (h: string[]) => {
+  for (let i = 0; i < possibleWins.length; i++) {
+    const [a, b, c] = possibleWins[i];
+
+    if (h[a] && h[a] === h[b] && h[a] === h[c]) {
+      return h[a];
+    }
+  }
+  return '';
+};
+
 export const Board = () => {
-  const [history, setHistory] = useState<string[]>(Array(9).fill(null));
+  const [gameStatus, setGameStatus] = useState<string[]>(playground);
   const [turn, setTurn] = useState<boolean>(true);
 
-  const possibleWins = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-
-  const calculateGame = (h: string[]) => {
-    for (let i = 0; i < possibleWins.length; i++) {
-      const [a, b, c] = possibleWins[i];
-
-      if (h[a] && h[a] === h[b] && h[a] === h[c]) {
-        return h[a];
-      }
-    }
-    return '';
-  };
-
-  const winner = calculateGame(history);
+  const winner = calculateGame(gameStatus);
 
   const onPress = (id: number) => {
     if (!winner) {
-      const copyHistory = { ...history };
+      const copyHistory = { ...gameStatus };
       copyHistory[id] = turn ? 'X' : 'O';
-      setHistory(copyHistory);
+      setGameStatus(copyHistory);
       setTurn(!turn);
     }
-    return;
   };
 
   const square = (id: number) => {
-    return <Box value={history[id]} handlePress={() => onPress(id)} />;
+    return <Box value={gameStatus[id]} handlePress={() => onPress(id)} />;
   };
 
   return (
@@ -75,7 +76,7 @@ export const Board = () => {
 
         <Text
           style={tailwind('text-xl font-bold')}
-          onPress={() => setHistory(Array(9).fill(null))}
+          onPress={() => setGameStatus(Array(9).fill(null))}
         >
           Restart
         </Text>
